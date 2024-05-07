@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:sixam_mart/common/widgets/corner_banner/banner.dart';
 import 'package:sixam_mart/common/widgets/corner_banner/corner_discount_tag.dart';
 import 'package:sixam_mart/common/widgets/custom_asset_image_widget.dart';
@@ -27,6 +28,8 @@ import 'package:sixam_mart/common/widgets/rating_bar.dart';
 import 'package:sixam_mart/features/store/screens/store_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'cart_count_view.dart';
 
 class ItemWidget extends StatelessWidget {
   final Item? item;
@@ -66,6 +69,8 @@ class ItemWidget extends StatelessWidget {
 
     return Stack(
       children: [
+
+
         Container(
           margin: ResponsiveHelper.isDesktop(context) ? null : const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
           decoration: BoxDecoration(
@@ -199,38 +204,12 @@ class ItemWidget extends StatelessWidget {
                     ]),
                   ),
 
-                  Column(mainAxisAlignment: isStore ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween, children: [
+                  Column(mainAxisAlignment: isStore ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween, 
+                      children: [
 
                     const SizedBox(),
 
-                    fromCartSuggestion ? Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                      child: Icon(Icons.add, color: Theme.of(context).cardColor, size: 12),
-                    ) : GetBuilder<FavouriteController>(builder: (favouriteController) {
-                      bool isWished = isStore ? favouriteController.wishStoreIdList.contains(store!.id)
-                          : favouriteController.wishItemIdList.contains(item!.id);
-                      return InkWell(
-                        onTap: !favouriteController.isRemoving ? () {
-                          if(AuthHelper.isLoggedIn()) {
-                            isWished ? favouriteController.removeFromFavouriteList(isStore ? store!.id : item!.id, isStore)
-                                : favouriteController.addToFavouriteList(item, store, isStore);
-                          }else {
-                            showCustomSnackBar('you_are_not_logged_in'.tr);
-                          }
-                        } : null,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: desktop ? Dimensions.paddingSizeSmall : 0),
-                          child: Icon(
-                            isWished ? Icons.favorite : Icons.favorite_border,  size: desktop ? 30 : 25,
-                            color: isWished ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
-                          ),
-                        ),
-                      );
-                    }),
+
 
                   ]),
 
@@ -238,6 +217,58 @@ class ItemWidget extends StatelessWidget {
               )),
 
             ]),
+          ),
+        ),
+
+        //Favorite icon
+        fromCartSuggestion ? Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            shape: BoxShape.circle,
+          ),
+          padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
+          child: Icon(Icons.add, color: Theme.of(context).cardColor, size: 12),
+        ) : GetBuilder<FavouriteController>(builder: (favouriteController) {
+          bool isWished = isStore ? favouriteController.wishStoreIdList.contains(store!.id)
+              : favouriteController.wishItemIdList.contains(item!.id);
+          return Positioned(
+            right: 9,top: 2,
+            child: InkWell(
+              onTap: !favouriteController.isRemoving ? () {
+                if(AuthHelper.isLoggedIn()) {
+                  isWished ? favouriteController.removeFromFavouriteList(isStore ? store!.id : item!.id, isStore)
+                      : favouriteController.addToFavouriteList(item, store, isStore);
+                }else {
+                  showCustomSnackBar('you_are_not_logged_in'.tr);
+                }
+              } : null,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: desktop ? Dimensions.paddingSizeSmall : 0),
+                child: Icon(
+                  isWished ? Icons.favorite : Icons.favorite_border,  size: desktop ? 30 : 25,
+                  color: isWished ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
+                ),
+              ),
+            ),
+          );
+        }),
+
+        //
+        Positioned(
+          right: 0,bottom: 9,
+          child: CartCountView(
+            item: item,
+            child: Container(
+              height: 35, width: 38,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(Dimensions.radiusLarge),
+                  bottomRight: Radius.circular(Dimensions.radiusLarge),
+                ),
+              ),
+              child: Icon(Icons.add_shopping_cart , color: Theme.of(context).cardColor, size: 20),
+            ),
           ),
         ),
 
@@ -249,6 +280,8 @@ class ItemWidget extends StatelessWidget {
             discount: discount, discountType: discountType,
             freeDelivery: isStore ? store!.freeDelivery : false,
         )) : const SizedBox(),
+
+
 
       ],
     );

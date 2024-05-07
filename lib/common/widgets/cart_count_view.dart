@@ -6,15 +6,15 @@ import 'package:sixam_mart/features/item/domain/models/item_model.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 class CartCountView extends StatelessWidget {
-  final Item item;
+  final Item? item;
   final Widget? child;
-  const CartCountView({super.key, required this.item, this.child});
+  const CartCountView({super.key,   this.item, this.child});
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CartController>(builder: (cartController) {
-      int cartQty = cartController.cartQuantity(item.id!);
-      int cartIndex = cartController.isExistInCart(item.id, cartController.cartVariant(item.id!), false, null);
+      int cartQty = cartController.cartQuantity(item!.id!);
+      int cartIndex = cartController.isExistInCart(item!.id, cartController.cartVariant(item!.id!), false, null);
       return cartQty != 0 ? Center(
         child: Container(
           width: 100,
