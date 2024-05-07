@@ -253,7 +253,7 @@ class ItemWidget extends StatelessWidget {
           );
         }),
 
-        //
+        //cart_count_view
         Positioned(
           right: 0,bottom: 9,
           child: CartCountView(
