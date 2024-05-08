@@ -139,6 +139,7 @@ class ReviewItemCard extends StatelessWidget {
                 ),
               ),
 
+              //favorite view
               AddFavouriteView(
                 top: 10, right: 10,
                 item: item!,
