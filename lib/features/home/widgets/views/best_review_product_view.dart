@@ -14,7 +14,8 @@ class BestReviewedProductView extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
-      child: Column(children: [
+      child: Column(
+          children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

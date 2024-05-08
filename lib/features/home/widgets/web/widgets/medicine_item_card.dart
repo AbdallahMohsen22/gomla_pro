@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/common/widgets/custom_ink_well.dart';
 import 'package:sixam_mart/features/item/controllers/item_controller.dart';
@@ -42,8 +44,9 @@ class MedicineItemCard extends StatelessWidget {
 
             Expanded(
               flex: 5,
-              child: Stack(children: [
-                ClipRRect(
+              child: Stack(
+                  children: [
+                    ClipRRect(
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(Dimensions.radiusDefault),
                     topRight: Radius.circular(Dimensions.radiusDefault),
@@ -56,19 +59,21 @@ class MedicineItemCard extends StatelessWidget {
                   ),
                 ),
 
-                AddFavouriteView(
+
+                    
+                    AddFavouriteView(
                   item: item,
                 ),
-
-                DiscountTag(
+                    
+                    DiscountTag(
                   discount: discount,
                   discountType: discountType,
                   freeDelivery: false,
                 ),
-
-                OrganicTag(item: item, placeInImage: false),
-
-                isShop ? const SizedBox() : Positioned(
+                    
+                    OrganicTag(item: item, placeInImage: false),
+                    
+                    isShop ? const SizedBox() : Positioned(
                   bottom: 10, right: 10,
                   child: CartCountView(
                     item: item,
@@ -81,25 +86,26 @@ class MedicineItemCard extends StatelessWidget {
                 ),
               ]),
             ),
-
+            
             Expanded(
               flex: 5,
               child: Padding(
                 padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                 child: Column(
-                  crossAxisAlignment: isShop ? CrossAxisAlignment.center : CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-
-                  Text(
+                  crossAxisAlignment: isShop ? CrossAxisAlignment.start : CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
                     item.storeName ?? '',
                     maxLines: 1, overflow: TextOverflow.ellipsis,
                     style: robotoRegular.copyWith(color: Theme.of(context).disabledColor),
                   ),
 
-                  Text(item.name ?? '', style: robotoBold,
+                    Text(item.name ?? '', style: robotoBold,
                     maxLines: 1, overflow: TextOverflow.ellipsis,
                   ),
-
-                  isShop ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    
+                    isShop ? Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     Icon(Icons.star, size: 15, color: Theme.of(context).primaryColor),
                     const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
@@ -109,8 +115,8 @@ class MedicineItemCard extends StatelessWidget {
                     Text("(${item.ratingCount})", style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor)),
 
                   ]) : const SizedBox(),
-
-                  item.discount != null && item.discount! > 0  ? Text(
+                    
+                    item.discount != null && item.discount! > 0  ? Text(
                     PriceConverter.convertPrice(Get.find<ItemController>().getStartingPrice(item)),
                     style: robotoMedium.copyWith(
                       fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor,
@@ -118,24 +124,46 @@ class MedicineItemCard extends StatelessWidget {
                     ), textDirection: TextDirection.ltr,
                   ) : const SizedBox(),
 
-                  Align(
+                    Align(
                     alignment: isShop ? Alignment.center : Alignment.centerLeft,
-                    child: Row(mainAxisAlignment: isShop ? MainAxisAlignment.center : MainAxisAlignment.start, children: [
-                      Text(
+                    child: Row(mainAxisAlignment: isShop ? MainAxisAlignment.start : MainAxisAlignment.start,
+                        children: [
+                          Text(
                         PriceConverter.convertPrice(
                           Get.find<ItemController>().getStartingPrice(item), discount: item.discount,
                           discountType: item.discountType,
                         ),
                         textDirection: TextDirection.ltr, style: robotoMedium,
                       ),
-                      const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
-                      (Get.find<SplashController>().configModel!.moduleConfig!.module!.unit! && item.unitType != null) ? Text(
+                          const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+
+                          (Get.find<SplashController>().configModel!.moduleConfig!.module!.unit! && item.unitType != null) ? Text(
                         '/ ${ item.unitType ?? ''}',
                         style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).hintColor),
                       ) : const SizedBox(),
+
+
                     ]),
                   ),
+
+                    Align(
+                      alignment: isShop ? Alignment.centerRight : Alignment.centerRight,
+                      child: CartCountView(
+                        item: item,
+                        child: Container(
+                          height: 31, width: 38,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(Dimensions.radiusLarge),
+                              bottomRight: Radius.circular(Dimensions.radiusLarge),
+                            ),
+                          ),
+                          child: Icon(Icons.add_shopping_cart , color: Theme.of(context).cardColor, size: 20),
+                        ),
+                      ),
+                    ),
                 ],
                 ),
               ),

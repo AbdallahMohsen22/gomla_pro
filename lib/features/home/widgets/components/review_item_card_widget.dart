@@ -43,7 +43,8 @@ class ReviewItemCard extends StatelessWidget {
 
             Expanded(
               flex: 5,
-              child: Stack(children: [
+              child: Stack(
+                children: [
                 Padding(
                   padding: const EdgeInsets.only(top: Dimensions.paddingSizeSmall, left: Dimensions.paddingSizeSmall, right: Dimensions.paddingSizeSmall),
                   child: ClipRRect(
@@ -56,6 +57,7 @@ class ReviewItemCard extends StatelessWidget {
                     ),
                   ),
                 ),
+
 
                 AddFavouriteView(
                   item: item!,

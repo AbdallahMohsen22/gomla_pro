@@ -60,7 +60,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
               if(itemController.item != null && itemController.variationIndex != null){
                 List<String> variationList = [];
                 for (int index = 0; index < itemController.item!.choiceOptions!.length; index++) {
-                  variationList.add(itemController.item!.choiceOptions![index].options![itemController.variationIndex![index]].replaceAll(' ', ''));
+                  variationList.add(itemController.item!.choiceOptions![index].options![itemController.variationIndex! [index]].replaceAll(' ', ''));
                 }
                 String variationType = '';
                 bool isFirst = true;
